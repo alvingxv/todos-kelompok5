@@ -3,8 +3,7 @@ package database
 import (
 	"fmt"
 
-	"github.com/alvingxv/kanban-board-kelompok5/entity"
-	"golang.org/x/crypto/bcrypt"
+	"github.com/alvingxv/todos-kelompok5/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -23,8 +22,7 @@ var (
 	port     = "5432"
 	user     = "root"
 	password = "root"
-	dbname   = "kanban-hacktiv"
-	dialect  = "postgres"
+	dbname   = "todos-hacktiv"
 )
 
 var db *gorm.DB
@@ -39,25 +37,8 @@ func HandleDatabaseConnection() {
 		panic("failed connect to database")
 	}
 
-	db.AutoMigrate(entity.User{}, entity.Category{}, entity.Task{})
+	db.AutoMigrate(entity.Todo{})
 
-	var user entity.User
-	db.First(&user, "role = ?", "admin")
-
-	if user.ID == 0 {
-		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("admin"), bcrypt.DefaultCost)
-		user = entity.User{
-			Fullname: "admin",
-			Email:    "admin@gmail.com",
-			Password: string(hashedPassword),
-			Role:     "admin",
-		}
-		err := db.Create(&user).Error
-
-		if err != nil {
-			panic("failed create Admin")
-		}
-	}
 }
 
 func GetDatabaseInstance() *gorm.DB {

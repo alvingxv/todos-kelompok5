@@ -1,10 +1,13 @@
 package handler
 
 import (
+	"github.com/alvingxv/todos-kelompok5/database"
+	"github.com/alvingxv/todos-kelompok5/docs"
+	"github.com/alvingxv/todos-kelompok5/repository/todo_repository/todo_pg"
+	"github.com/alvingxv/todos-kelompok5/service"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/swag/example/basic/docs"
 )
 
 func StartApp() {
@@ -12,31 +15,27 @@ func StartApp() {
 	database.HandleDatabaseConnection()
 	db := database.GetDatabaseInstance()
 
-	// Category Injection
-	categoryRepo := category_pg.NewCategoryPG(db)
-	categoryService := service.NewCategoryService(categoryRepo)
-	categoryHandler := NewCategoryHandler(categoryService)
+	todoRepo := todo_pg.NewTodoPG(db)
+	todoService := service.NewTodoService(todoRepo)
+	todoHandler := NewTodoHandler(todoService)
 
 	// port := os.Getenv("PORT")
 	port := "4000"
 	// port := helpers.GoDotEnvVariable("PORT")
 	r := gin.Default()
 
-	docs.SwaggerInfo.Title = "Kanban Board Kelompok 5"
-	docs.SwaggerInfo.Description = "Final Project 3 Hactiv8 by Kelompok 5"
+	docs.SwaggerInfo.Title = "Todos Kelompok 5"
+	docs.SwaggerInfo.Description = "Final Project 1 Hactiv8 by Kelompok 5"
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = "localhost"
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	categoryRoute := r.Group("/categories")
+	todoRoute := r.Group("/categories")
 	{
 
-		categoryRoute.GET("", categoryHandler.GetCategory)
-		categoryRoute.POST("", categoryHandler.CreateCategory)
-		categoryRoute.PATCH("/:id", categoryHandler.UpdateCategory)
-		categoryRoute.DELETE("/:id", categoryHandler.DeleteCategory)
+		todoRoute.GET("")
 	}
 	r.Run(":" + port)
 }
