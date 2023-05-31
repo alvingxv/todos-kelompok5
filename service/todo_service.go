@@ -1,6 +1,8 @@
 package service
 
 import (
+	"github.com/alvingxv/todos-kelompok5/dto"
+	"github.com/alvingxv/todos-kelompok5/pkg/errs"
 	"github.com/alvingxv/todos-kelompok5/repository/todo_repository"
 )
 
@@ -9,12 +11,32 @@ type todoService struct {
 }
 
 type TodoService interface {
+	GetAllTodos() (*[]dto.GetAllTodoResponse, errs.MessageErr)
 }
 
 func NewTodoService(todoRepository todo_repository.TodoRepository) TodoService {
 	return &todoService{
 		todoRepository: todoRepository,
 	}
+}
+
+func (ts *todoService) GetAllTodos() (*[]dto.GetAllTodoResponse, errs.MessageErr) {
+
+	todos, err := ts.todoRepository.GetAllTodos()
+
+	if err != nil {
+		return nil, err
+	}
+
+	var response []dto.GetAllTodoResponse
+
+	for _, todo := range todos {
+		todosResponse := todo.TodoToTodoResponses()
+		response = append(response, todosResponse)
+	}
+
+	return &response, nil
+
 }
 
 // func (cs *categoryService) GetCategory(userId uint) (*[]dto.GetCategoryResponse, errs.MessageErr) {

@@ -32,10 +32,10 @@ func StartApp() {
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	todoRoute := r.Group("/categories")
+	todoRoute := r.Group("/todos")
 	{
 
-		todoRoute.GET("")
+		todoRoute.GET("", todoHandler.GetAllTodos)
 	}
 	r.Run(":" + port)
 }

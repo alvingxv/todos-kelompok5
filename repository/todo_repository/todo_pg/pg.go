@@ -1,6 +1,8 @@
 package todo_pg
 
 import (
+	"github.com/alvingxv/todos-kelompok5/entity"
+	"github.com/alvingxv/todos-kelompok5/pkg/errs"
 	"github.com/alvingxv/todos-kelompok5/repository/todo_repository"
 	"gorm.io/gorm"
 )
@@ -13,6 +15,17 @@ func NewTodoPG(db *gorm.DB) todo_repository.TodoRepository {
 	return &todoPG{
 		db: db,
 	}
+}
+
+func (t *todoPG) GetAllTodos() ([]entity.Todo, errs.MessageErr) {
+	var todos []entity.Todo
+	result := t.db.Find(entity.Todo{}).Error
+
+	if result != nil {
+		return nil, errs.NewInternalServerError("something Went Wrong")
+	}
+
+	return todos, nil
 }
 
 // func (c *categoryPG) GetAllCategory(userId uint) ([]entity.Category, errs.MessageErr) {
