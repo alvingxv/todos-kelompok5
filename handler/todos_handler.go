@@ -71,3 +71,30 @@ func (th *todoHandler) GetTodoById(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, result)
 }
+
+func (th *todoHandler) UpdateTodo(ctx *gin.Context) {
+	id, err := helpers.GetParamId(ctx, "id")
+
+	if err != nil {
+		ctx.JSON(err.Status(), err)
+		return
+	}
+
+	var updateRequest dto.UpdateRequest
+
+	if err := ctx.ShouldBindJSON(&updateRequest); err != nil {
+		errBindJson := errs.NewUnprocessibleEntityError("invalid request body")
+		ctx.JSON(errBindJson.Status(), errBindJson)
+		return
+	}
+
+	result, err := th.todoService.UpdateTodo(updateRequest, id)
+
+	if err != nil {
+		ctx.JSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, result)
+
+}

@@ -54,6 +54,21 @@ func (t *todoPG) GetTodoById(todo *entity.Todo) errs.MessageErr {
 	return nil
 }
 
+func (t *todoPG) UpdateTodo(todo *entity.Todo) errs.MessageErr {
+	result := t.db.First(&todo, todo.Id)
+	if result.Error != nil {
+		return errs.NewNotFoundError("not found")
+	}
+
+	result = t.db.Save(&todo)
+
+	if result.Error != nil {
+		return errs.NewInternalServerError("Internal Server Error")
+	}
+
+	return nil
+}
+
 // func (c *categoryPG) GetAllCategory(userId uint) ([]entity.Category, errs.MessageErr) {
 // 	var categories []entity.Category
 
