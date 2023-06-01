@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetParamId(c *gin.Context, key string) (uint, errs.MessageErr) {
+func GetParamId(c *gin.Context, key string) (int, errs.MessageErr) {
 	value := c.Param(key)
 
 	id, err := strconv.Atoi(value)
@@ -16,5 +16,5 @@ func GetParamId(c *gin.Context, key string) (uint, errs.MessageErr) {
 		return 0, errs.NewBadRequest("invalid parameter id")
 	}
 
-	return uint(id), nil
+	return int(id), nil
 }
