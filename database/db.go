@@ -2,28 +2,29 @@ package database
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/alvingxv/todos-kelompok5/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-// var (
-// 	host     = os.Getenv("PGHOST")
-// 	port     = os.Getenv("PGPORT")
-// 	user     = os.Getenv("PGUSER")
-// 	password = os.Getenv("PGPASSWORD")
-// 	dbname   = os.Getenv("PGDATABASE")
-// 	dialect  = "postgres"
-// )
-
 var (
-	host     = "localhost"
-	port     = "5432"
-	user     = "root"
-	password = "root"
-	dbname   = "todos-hacktiv"
+	host     = os.Getenv("PGHOST")
+	port     = os.Getenv("PGPORT")
+	user     = os.Getenv("PGUSER")
+	password = os.Getenv("PGPASSWORD")
+	dbname   = os.Getenv("PGDATABASE")
+	dialect  = "postgres"
 )
+
+// var (
+// 	host     = "localhost"
+// 	port     = "5432"
+// 	user     = "root"
+// 	password = "root"
+// 	dbname   = "todos-hacktiv"
+// )
 
 var db *gorm.DB
 

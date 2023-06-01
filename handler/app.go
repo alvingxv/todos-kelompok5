@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"os"
+
 	"github.com/alvingxv/todos-kelompok5/database"
 	"github.com/alvingxv/todos-kelompok5/docs"
 	"github.com/alvingxv/todos-kelompok5/repository/todo_repository/todo_pg"
@@ -19,8 +21,8 @@ func StartApp() {
 	todoService := service.NewTodoService(todoRepo)
 	todoHandler := NewTodoHandler(todoService)
 
-	// port := os.Getenv("PORT")
-	port := "4000"
+	port := os.Getenv("PORT")
+	// port := "4000"
 	// port := helpers.GoDotEnvVariable("PORT")
 	r := gin.Default()
 
