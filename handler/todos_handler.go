@@ -5,6 +5,7 @@ import (
 
 	"github.com/alvingxv/todos-kelompok5/dto"
 	"github.com/alvingxv/todos-kelompok5/pkg/errs"
+	"github.com/alvingxv/todos-kelompok5/pkg/helpers"
 	"github.com/alvingxv/todos-kelompok5/service"
 	"github.com/gin-gonic/gin"
 )
@@ -50,4 +51,23 @@ func (th *todoHandler) CreateTodo(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, result)
 
+}
+
+func (th *todoHandler) GetTodoById(ctx *gin.Context) {
+
+	id, err := helpers.GetParamId(ctx, "id")
+
+	if err != nil {
+		ctx.JSON(err.Status(), err)
+		return
+	}
+
+	result, err := th.todoService.GetTodoById(id)
+
+	if err != nil {
+		ctx.JSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, result)
 }

@@ -15,6 +15,7 @@ type todoService struct {
 type TodoService interface {
 	GetAllTodos() (*[]dto.GetAllTodoResponse, errs.MessageErr)
 	CreateTodo(payload dto.CreateTodoRequest) (*dto.CreateTodoResponse, errs.MessageErr)
+	GetTodoById(id int) (*dto.GetTodoById, errs.MessageErr)
 }
 
 func NewTodoService(todoRepository todo_repository.TodoRepository) TodoService {
@@ -65,6 +66,30 @@ func (ts *todoService) CreateTodo(payload dto.CreateTodoRequest) (*dto.CreateTod
 		Completed: todos.Completed,
 		CreatedAt: todos.CreatedAt,
 		UpdatedAt: todos.UpdatedAt,
+	}
+
+	return &response, nil
+
+}
+
+func (ts *todoService) GetTodoById(id int) (*dto.GetTodoById, errs.MessageErr) {
+
+	todo := &entity.Todo{
+		Id: id,
+	}
+
+	err := ts.todoRepository.GetTodoById(todo)
+
+	if err != nil {
+		return nil, err
+	}
+
+	response := dto.GetTodoById{
+		Id:        todo.Id,
+		Title:     todo.Title,
+		Completed: todo.Completed,
+		CreatedAt: todo.CreatedAt,
+		UpdatedAt: todo.UpdatedAt,
 	}
 
 	return &response, nil

@@ -1,6 +1,8 @@
 package todo_pg
 
 import (
+	"errors"
+
 	"github.com/alvingxv/todos-kelompok5/entity"
 	"github.com/alvingxv/todos-kelompok5/pkg/errs"
 	"github.com/alvingxv/todos-kelompok5/repository/todo_repository"
@@ -19,7 +21,7 @@ func NewTodoPG(db *gorm.DB) todo_repository.TodoRepository {
 
 func (t *todoPG) GetAllTodos() ([]entity.Todo, errs.MessageErr) {
 	var todos []entity.Todo
-	result := t.db.Find(entity.Todo{}).Error
+	result := t.db.Find(&todos).Error
 
 	if result != nil {
 		return nil, errs.NewInternalServerError("something Went Wrong")
@@ -34,6 +36,19 @@ func (t *todoPG) CreateTodo(todo *entity.Todo) errs.MessageErr {
 
 	if err != nil {
 		return errs.NewInternalServerError("something Went Wrong")
+	}
+
+	return nil
+}
+
+func (t *todoPG) GetTodoById(todo *entity.Todo) errs.MessageErr {
+	err := t.db.First(&todo).Error
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return errs.NewNotFoundError("Not found")
+		}
+		return errs.NewInternalServerError("Internal Server Error")
 	}
 
 	return nil

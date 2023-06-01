@@ -37,6 +37,7 @@ func StartApp() {
 
 		todoRoute.GET("", todoHandler.GetAllTodos)
 		todoRoute.POST("", todoHandler.CreateTodo)
+		todoRoute.GET("/:id", todoHandler.GetTodoById)
 
 	}
 	r.Run("127.0.0.1:" + port)
