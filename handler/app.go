@@ -27,7 +27,7 @@ func StartApp() {
 	docs.SwaggerInfo.Title = "Todos Kelompok 5"
 	docs.SwaggerInfo.Description = "Final Project 1 Hactiv8 by Kelompok 5"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost"
+	docs.SwaggerInfo.Host = "localhost:4000/"
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))

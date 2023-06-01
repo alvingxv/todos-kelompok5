@@ -20,6 +20,13 @@ func NewTodoHandler(todoService service.TodoService) todoHandler {
 	}
 }
 
+// GetAllTodos godoc
+// @Tags todos
+// @Description Get All Todos
+// @ID get-all-todos
+// @Produce json
+// @Success 200 {object} dto.GetAllTodoResponse
+// @Router /todos [get]
 func (th *todoHandler) GetAllTodos(ctx *gin.Context) {
 
 	result, err := th.todoService.GetAllTodos()
@@ -32,6 +39,14 @@ func (th *todoHandler) GetAllTodos(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// CreateTodos godoc
+// @Tags todos
+// @Description Create a Todo
+// @ID create-todo
+// @Produce json
+// @Param request body dto.CreateTodoRequest true "Todo Request Body"
+// @Success 201 {object} dto.CreateTodoResponse
+// @Router /todos [post]
 func (th *todoHandler) CreateTodo(ctx *gin.Context) {
 
 	var todoRequest dto.CreateTodoRequest
@@ -53,6 +68,16 @@ func (th *todoHandler) CreateTodo(ctx *gin.Context) {
 
 }
 
+// GetTodoById godoc
+// @Summary Get a Todo by ID
+// @Tags todos
+// @Description Get a Todo by ID
+// @ID get-todo-by-id
+// @Accept json
+// @Produce json
+// @Param id path string true "Todo ID"
+// @Success 200 {object} dto.GetTodoById
+// @Router /todos/{id} [get]
 func (th *todoHandler) GetTodoById(ctx *gin.Context) {
 
 	id, err := helpers.GetParamId(ctx, "id")
@@ -72,6 +97,17 @@ func (th *todoHandler) GetTodoById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// UpdateTodo godoc
+// @Summary Update a Todo
+// @Tags todos
+// @Description Update a Todo by ID
+// @ID update-todo
+// @Accept json
+// @Produce json
+// @Param id path string true "Todo ID"
+// @Param request body dto.UpdateRequest true "Todo Update Request Body"
+// @Success 200 {object} dto.UpdateResponse
+// @Router /todos/{id} [put]
 func (th *todoHandler) UpdateTodo(ctx *gin.Context) {
 	id, err := helpers.GetParamId(ctx, "id")
 
@@ -99,6 +135,15 @@ func (th *todoHandler) UpdateTodo(ctx *gin.Context) {
 
 }
 
+// DeleteTodo godoc
+// @Summary Delete a Todo
+// @Tags todos
+// @Description Delete a Todo by ID
+// @ID delete-todo
+// @Produce json
+// @Param id path string true "Todo ID"
+// @Success 200
+// @Router /todos/{id} [delete]
 func (th *todoHandler) DeleteTodo(ctx *gin.Context) {
 
 	id, err := helpers.GetParamId(ctx, "id")
