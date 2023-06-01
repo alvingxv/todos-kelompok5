@@ -17,6 +17,7 @@ type TodoService interface {
 	CreateTodo(payload dto.CreateTodoRequest) (*dto.CreateTodoResponse, errs.MessageErr)
 	GetTodoById(id int) (*dto.GetTodoById, errs.MessageErr)
 	UpdateTodo(payload dto.UpdateRequest, id int) (*dto.UpdateResponse, errs.MessageErr)
+	DeleteTodo(id int) errs.MessageErr
 }
 
 func NewTodoService(todoRepository todo_repository.TodoRepository) TodoService {
@@ -124,6 +125,16 @@ func (ts *todoService) UpdateTodo(payload dto.UpdateRequest, id int) (*dto.Updat
 	}
 
 	return &response, nil
+}
+
+func (ts *todoService) DeleteTodo(id int) errs.MessageErr {
+	err := ts.todoRepository.DeleteTodo(id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // func (cs *categoryService) GetCategory(userId uint) (*[]dto.GetCategoryResponse, errs.MessageErr) {

@@ -10,4 +10,5 @@ type TodoRepository interface {
 	CreateTodo(todo *entity.Todo) errs.MessageErr
 	GetTodoById(todo *entity.Todo) errs.MessageErr
 	UpdateTodo(todo *entity.Todo) errs.MessageErr
+	DeleteTodo(id int) errs.MessageErr
 }

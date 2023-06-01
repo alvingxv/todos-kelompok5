@@ -98,3 +98,24 @@ func (th *todoHandler) UpdateTodo(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 
 }
+
+func (th *todoHandler) DeleteTodo(ctx *gin.Context) {
+
+	id, err := helpers.GetParamId(ctx, "id")
+
+	if err != nil {
+		ctx.JSON(err.Status(), err)
+		return
+	}
+
+	err = th.todoService.DeleteTodo(id)
+
+	if err != nil {
+		ctx.JSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Todo has been successfully deleted",
+	})
+}
