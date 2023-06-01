@@ -55,12 +55,14 @@ func (t *todoPG) GetTodoById(todo *entity.Todo) errs.MessageErr {
 }
 
 func (t *todoPG) UpdateTodo(todo *entity.Todo) errs.MessageErr {
+	title := todo.Title
+
 	result := t.db.First(&todo, todo.Id)
 	if result.Error != nil {
 		return errs.NewNotFoundError("not found")
 	}
 
-	result = t.db.Save(&todo)
+	result = t.db.Model(&todo).Update("title", title)
 
 	if result.Error != nil {
 		return errs.NewInternalServerError("Internal Server Error")
