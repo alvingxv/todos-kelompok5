@@ -28,6 +28,17 @@ func (t *todoPG) GetAllTodos() ([]entity.Todo, errs.MessageErr) {
 	return todos, nil
 }
 
+func (t *todoPG) CreateTodo(todo *entity.Todo) errs.MessageErr {
+
+	err := t.db.Create(&todo).Error
+
+	if err != nil {
+		return errs.NewInternalServerError("something Went Wrong")
+	}
+
+	return nil
+}
+
 // func (c *categoryPG) GetAllCategory(userId uint) ([]entity.Category, errs.MessageErr) {
 // 	var categories []entity.Category
 

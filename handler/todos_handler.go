@@ -3,6 +3,8 @@ package handler
 import (
 	"net/http"
 
+	"github.com/alvingxv/todos-kelompok5/dto"
+	"github.com/alvingxv/todos-kelompok5/pkg/errs"
 	"github.com/alvingxv/todos-kelompok5/service"
 	"github.com/gin-gonic/gin"
 )
@@ -27,4 +29,25 @@ func (th *todoHandler) GetAllTodos(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, result)
+}
+
+func (th *todoHandler) CreateTodo(ctx *gin.Context) {
+
+	var todoRequest dto.CreateTodoRequest
+
+	if err := ctx.ShouldBindJSON(&todoRequest); err != nil {
+		errBindJson := errs.NewUnprocessibleEntityError("invalid request body")
+		ctx.JSON(errBindJson.Status(), errBindJson)
+		return
+	}
+
+	result, err := th.todoService.CreateTodo(todoRequest)
+
+	if err != nil {
+		ctx.JSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, result)
+
 }
